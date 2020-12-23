@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Alkis Planer</title>
+    <link rel="stylesheet" href="node_modules\bulma\css\bulma.css">
+
+</head>
+<body>
+    <style>
+
+       /* controles */
+        #controles {
+            height: 100px;
+            padding: 20px;
+            display: flex;
+            position: relative;
+        }
+
+         /* la moda */
+          #titulo,#descripcion {
+               margin : 10px 0;
+               min-width: 300px;
+               /* margin-left: 22%; */
+               display: flex;
+               align-items: center;
+               justify-items: center;
+          }
+
+          h3 {
+              margin     : 5px 0 10px 10px;
+              font-size  : 1.34rem;
+              text-aling : left;
+          }
+
+          p {
+            margin : 0 0 10px 10px;
+            text-align: left;
+          }
+
+          input#titulo  {
+              margin-left: 20px;
+          }
+
+          #add {
+              /* padding: 10px; */
+              margin-left: 20px;
+              width: 48%;
+          }
+
+          /* los estilos de los item */
+          .item {
+              margin-left: 6px !important;
+              margin-top : 10px;
+              border-radius: 5px;
+          }
+  
+    
+    </style>
+      <!-- y funciona de puta madre -->
+
+      
+      <div id="controles" class="container">
+        <button class="button modal-button" id="lanzar"  data-target="modal" aria-haspopup="true" >
+            Launch
+         </button>
+      </div>
+      
+
+        <div id="modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <!-- Any other Bulma elements you want -->
+                 <div class="wrap">
+                     
+                        <div class="card">
+
+                            <div class="card-header">
+                                <div class="card-tile">
+
+                                    <h3>Titulo</h3>
+
+                                    <label for="titulo">
+                                        <input type="text" name="titulo" id="titulo">
+                                    </label>    
+
+                                </div>
+                            </div>
+                            
+                            <div class="card-content">
+                                 <h5>Descripcion de la tarea</h5>
+                                <label for="decripcion">
+                                    <textarea name="descripcion" id="descripcion" cols="30" rows="10"></textarea>
+                                </label>
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="button is-medium" id="add" type="button">
+                                    Add
+                                </button>
+                            </div>
+
+                        </div>>
+
+                 </div>   
+                 <!-- fin del wrap   -->
+
+            </div>
+            <!-- <button class="modal-close is-large" aria-label="close"></button> -->
+          </div>
+            
+
+
+      <!-- del dispaly de las columnas con los recordatorios -->
+     <div class="container">
+        <div id="panel" class="columns is-multiline">
+        </div>
+     </div>
+
+
+    <script>
+
+    // los hooks
+    let doc   = document;
+    let modal = doc.getElementById('modal');
+    let panel = doc.getElementById('panel');
+    let items = []; // los itenes
+
+    // los controladores
+    let lanzar =  doc.getElementById('lanzar');  // lanzar modal
+    let mBackGround =  doc.querySelector('.modal-background'); // cerra modal
+
+    // lsod atos de recordatorio
+    let titulo      = doc.getElementById('titulo');
+    let descripcion = doc.getElementById('descripcion');
+
+    // agregar 
+    let add = doc.getElementById('add');
+
+   //  como hcaer lo de ahce click
+    add.addEventListener('click', ()=>{
+
+        // faltan campos
+            if( titulo.value.trim() == '' )
+            {
+                titulo.style.border  = '1px solid red'; // canbiamos
+
+            }else if(descripcion.value.trim() == '') 
+            {
+                titulo.style.border  = '1px solid green';   // cambiamos estilos
+                descripcion.style.border  = '1px solid red';
+            } else {  // de tora manera..
+
+                     // la div principal
+                     var div = doc.createElement('div');  // creamos el item
+                     div.classList.add('column', 'is-one-quarter','card','is-3','item');  // agregamos la clase
+                
+                   // el titulo
+                    var h3 = document.createElement('h3');
+                    h3.textContent = titulo.value.trim();  // agregamos esto
+                    // la descripcion
+                    var p = document.createElement('p');
+                    p.textContent = descripcion.value.trim();  // agregamos esto
+
+                    // y ahora un boton para marcar hecho
+                    var done = doc.createElement('button');
+                    done.id = 'done';
+                    done.classList.add('button');
+                    done.type = 'button';
+                    done.textContent = 'Hecho';
+
+                    div.append(h3,p,done);   // hacemos agergarle a la div
+                    div.style.border = '1px solid orangered';
+
+                    items.push(div); // metemos en los items
+                    panel.append(div);  // agregamos al panel
+                    modal.classList.remove('is-active'); // out class
+
+                    // resetamos los campos
+                    titulo.value = '';
+                    descripcion.value = '';
+                    titulo.style.border  = '1px solid #000';
+                    descripcion.style.border  = '1px solid #000';
+            }
+    });
+    
+        // lanzar modal
+        lanzar.addEventListener('click', ()=>{
+            modal.classList.add('is-active');  // agregamo
+        });
+ 
+       //cerrar modal
+        mBackGround.addEventListener('click',(e)=>{
+                 modal.classList.remove('is-active'); // removemos
+        });
+
+        // evento click al documento
+        document.addEventListener('click',function(e){
+                // hook el evento del target
+                if(e.target && e.target.id == 'done'){  // si cocincide
+                       var hook = e.target.closest('.item'); // el hook a la columna
+                       hook.style.border = '1px solid green'; // cambiamos el estilos
+                }
+ });
+
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "alkisplaner",
+  "version": "1.0.0",
+  "description": "simple to-do list , one page app ",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alki",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^0.8.0"
+  }
+}
